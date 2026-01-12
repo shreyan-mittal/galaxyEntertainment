@@ -151,7 +151,7 @@ function About() {
                 <img
                   src="/images/logo.png"
                   alt="Galaxy Entertainment"
-                  className="w-5/5 h-auto object-contain drop-shadow-[0_0_25px_rgba(234,179,8,0.6)]"
+                  className="w-4/5 h-auto object-contain drop-shadow-[0_0_25px_rgba(234,179,8,0.6)]"
                   style={{
                     animation: 'tilt3d 6s ease-in-out infinite',
                     transformStyle: 'preserve-3d'
