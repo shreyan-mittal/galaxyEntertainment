@@ -206,7 +206,7 @@ function Contact() {
               </div>
             </div>
 
-            <div id="message-form" className={`mt-12 sm:mt-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '1000ms' }}>
+            <div id="message-form" className={`mt-12 sm:mt-16 scroll-mt-24 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '1000ms' }}>
               <div className="relative group bg-gradient-to-br from-navy-50 via-white to-gold-50 border-2 border-gray-100 rounded-3xl p-6 sm:p-8 md:p-10 overflow-hidden hover:border-gold-500 hover:shadow-2xl transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-gold-500/0 via-gold-500/5 to-gold-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                 <div className="absolute -inset-1 bg-gradient-to-r from-gold-500 via-amber-500 to-gold-500 opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-500"></div>

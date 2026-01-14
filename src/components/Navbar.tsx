@@ -16,7 +16,7 @@ function Navbar() {
     { label: 'Past Events', id: 'past-events' },
     { label: 'About', id: 'about' },
     { label: 'Contact', id: 'contact' },
-    { label: 'Register for Event Updates', id: 'contact' },
+    { label: 'Register for Event Updates', id: 'message-form' },
   ];
 
   return (
