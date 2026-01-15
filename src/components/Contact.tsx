@@ -51,33 +51,24 @@ function Contact() {
     setErrorMessage('');
 
     try {
-      if (!supabase) {
-        setErrorMessage('Database connection not configured.');
-        setSubmitStatus('error');
-        setIsSubmitting(false);
-        return;
-      }
+    const res = await fetch('/api/contact', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(formData),
+});
 
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            message: formData.message,
-          }
-        ]);
+const data = await res.json().catch(() => ({}));
 
-      if (error) {
-        console.error('Supabase error:', error);
-        setErrorMessage(`Error: ${error.message}`);
-        setSubmitStatus('error');
-      } else {
-        setSubmitStatus('success');
-        setFormData({ name: '', email: '', phone: '', message: '' });
-        setTimeout(() => setSubmitStatus('idle'), 5000);
-      }
+if (!res.ok) {
+  setSubmitStatus('error');
+  setErrorMessage(data?.error || 'Failed to submit form');
+  return;
+}
+
+setSubmitStatus('success');
+setFormData({ name: '', email: '', phone: '', message: '' });
+setTimeout(() => setSubmitStatus('idle'), 5000);
+
     } catch (err) {
       console.error('Submission error:', err);
       setErrorMessage(`Something went wrong: ${err instanceof Error ? err.message : 'Unknown error'}`);
