@@ -31,7 +31,7 @@ function UpcomingEvents() {
       id: 1,
       title: "The Magic of Javed Ali",
       date: '16th May, 2026',
-      time: '19:30',
+      time: '19:00',
       venue: 'Perth Convention & Exhibition Centre',
       description: 'Experience the magic of Bollywood with legendary playback singer Javed Ali performing your favorite melodies live.',
       category: 'Music',
