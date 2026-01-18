@@ -28,19 +28,23 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: dbError.message });
     }
 
-    const toEmails = (process.env.NOTIFY_TO_EMAIL || "")
+    const emails = (process.env.NOTIFY_TO_EMAIL || "")
       .split(",")
       .map((e) => e.trim())
       .filter(Boolean);
 
-    if (toEmails.length === 0) {
+    if (emails.length === 0) {
       return res.status(500).json({ error: "NOTIFY_TO_EMAIL is missing" });
     }
+
+    const toEmail = emails[0];        // visible recipient
+    const bccEmails = emails.slice(1); // hidden recipients
 
     // Send email
     await resend.emails.send({
       from: `Galaxy Entertainment <${process.env.NOTIFY_FROM_EMAIL}>`,
-      to: toEmails,
+      to: toEmail,
+      ...(bccEmails.length > 0 ? { bcc: bccEmails } : {}),
       subject: `New enquiry from ${name}`,
       text: `Name: ${name}
 Email: ${email}
