@@ -1,5 +1,5 @@
-import { Calendar, MapPin, Ticket, Clock, Sparkles, Star } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { Calendar, MapPin, Ticket, Clock, Sparkles, Star } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 
 function UpcomingEvents() {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,7 +12,7 @@ function UpcomingEvents() {
           setIsVisible(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -27,17 +27,18 @@ function UpcomingEvents() {
   }, []);
 
   const events = [
-        {
+    {
       id: 1,
       title: "The Magic of Javed Ali",
-      date: '16th May, 2026',
-      time: '19:00',
-      venue: 'Perth Convention & Exhibition Centre',
-      description: 'Experience the magic of Bollywood with legendary playback singer Javed Ali performing your favorite melodies live.',
-      category: 'Music',
-      artist: 'Javed Ali',
-      image: '/images/javedaliposter.jpg',
-    }
+      date: "16th May, 2026",
+      time: "19:00",
+      venue: "Perth Convention & Exhibition Centre",
+      description:
+        "Experience the magic of Bollywood with legendary playback singer Javed Ali performing your favorite melodies live.",
+      category: "Music",
+      artist: "Javed Ali",
+      image: "/images/javedaliposter.jpg",
+    },
     // {
     //   id: 2,
     //   title: 'Garba Night with Geeta Rabari',
@@ -52,10 +53,20 @@ function UpcomingEvents() {
   ];
 
   return (
-    <section ref={sectionRef} id="upcoming-events" className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 relative overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="upcoming-events"
+      className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 relative overflow-hidden"
+    >
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gold-500 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s' }}></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold-400 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '10s' }}></div>
+        <div
+          className="absolute top-20 left-10 w-96 h-96 bg-gold-500 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: "8s" }}
+        ></div>
+        <div
+          className="absolute bottom-20 right-10 w-96 h-96 bg-gold-400 rounded-full blur-3xl animate-pulse"
+          style={{ animationDuration: "10s" }}
+        ></div>
       </div>
 
       <div className="absolute inset-0 opacity-20">
@@ -67,7 +78,7 @@ function UpcomingEvents() {
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
               animationDelay: `${i * 0.4}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
+              animationDuration: `${3 + Math.random() * 2}s`,
             }}
           />
         ))}
@@ -82,22 +93,28 @@ function UpcomingEvents() {
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
               animationDelay: `${i * 0.6}s`,
-              animationDuration: `${2.5 + Math.random() * 2}s`
+              animationDuration: `${2.5 + Math.random() * 2}s`,
             }}
           />
         ))}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className={`text-center mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
+        <div
+          className={`text-center mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}
+        >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             <span className="inline-block hover:scale-110 transition-transform duration-300">
               Upcoming <span className="text-gold-400">Events</span>
             </span>
           </h2>
           <div className="w-16 sm:w-24 h-1 bg-gold-400 mx-auto mb-4 sm:mb-6 animate-pulse"></div>
-          <p className={`text-gold-200 text-base sm:text-lg max-w-2xl mx-auto px-4 transition-all duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`} style={{ transitionDelay: '200ms' }}>
-            Don't miss out on our exciting lineup of events bringing the best of Indian entertainment to Perth
+          <p
+            className={`text-gold-200 text-base sm:text-lg max-w-2xl mx-auto px-4 transition-all duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
+            style={{ transitionDelay: "200ms" }}
+          >
+            Don't miss out on our exciting lineup of events bringing the best of
+            Indian entertainment to Perth
           </p>
         </div>
 
@@ -105,7 +122,7 @@ function UpcomingEvents() {
           {events.map((event, index) => (
             <div
               key={event.id}
-              className={`group bg-white rounded-xl sm:rounded-2xl overflow-hidden image-3d-tilt flex flex-col transition-all duration-1000 hover:shadow-2xl hover:shadow-gold-500/20 w-full md:w-[500px] lg:w-[600px] ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}
+              className={`group bg-white rounded-xl sm:rounded-2xl overflow-hidden image-3d-tilt flex flex-col transition-all duration-1000 hover:shadow-2xl hover:shadow-gold-500/20 w-full md:w-[500px] lg:w-[600px] ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
               style={{ transitionDelay: `${400 + index * 200}ms` }}
             >
               <div className="relative overflow-hidden gold-glow-effect">
@@ -119,14 +136,23 @@ function UpcomingEvents() {
 
                 <div className="absolute inset-0 border-2 border-gold-500/0 group-hover:border-gold-500/40 rounded-xl sm:rounded-2xl transition-all duration-500"></div>
 
-                <div className="absolute inset-0 bg-radial-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-500" style={{background: 'radial-gradient(circle at center, rgba(218, 165, 32, 0.4) 0%, transparent 70%)'}}></div>
+                <div
+                  className="absolute inset-0 bg-radial-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+                  style={{
+                    background:
+                      "radial-gradient(circle at center, rgba(218, 165, 32, 0.4) 0%, transparent 70%)",
+                  }}
+                ></div>
 
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold-400/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
 
                 <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <Sparkles className="w-6 h-6 text-gold-400 animate-pulse" />
                 </div>
-                <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ transitionDelay: '100ms' }}>
+                <div
+                  className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ transitionDelay: "100ms" }}
+                >
                   <Star className="w-5 h-5 text-gold-300 animate-pulse" />
                 </div>
 
@@ -159,7 +185,9 @@ function UpcomingEvents() {
                   {event.description}
                 </p>
 
-                <button
+                {/*button that makes the register for pre sale button directed towards form*/}
+
+                {/* <button
                   onClick={() => {
                     const formSection = document.getElementById('message-form');
                     if (formSection) {
@@ -174,15 +202,36 @@ function UpcomingEvents() {
                   </div>
                   <Ticket className="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:rotate-[360deg] group-hover/btn:scale-125 transition-all duration-700 relative z-10" />
                   <span className="relative z-10 group-hover/btn:tracking-wider transition-all duration-300">Register for Pre-Sale!</span>
-                </button>
+                </button> */}
+
+                {/* Below is the button to book the tickets, redirecting to the ticketing link.  */}
+
+                <a
+                  href="https://premier.ticketek.com.au/shows/Show.aspx?sh=JAVEDALI26&eg=PROM&ep=PRESALE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-600 hover:to-amber-600 text-white font-semibold py-3 sm:py-4 rounded-lg transition-all duration-500 shadow-md hover:shadow-2xl hover:shadow-gold-500/60 mt-auto text-sm sm:text-base relative overflow-hidden group/btn hover:scale-110 hover:-translate-y-1"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></div>
+
+                  <Ticket className="w-4 h-4 sm:w-5 sm:h-5 group-hover/btn:rotate-[360deg] group-hover/btn:scale-125 transition-all duration-700 relative z-10" />
+
+                  <span className="relative z-10 group-hover/btn:tracking-wider transition-all duration-300">
+                    Book Now
+                  </span>
+                </a>
               </div>
             </div>
           ))}
         </div>
 
-        <div className={`text-center mt-8 sm:mt-12 px-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '1000ms' }}>
+        <div
+          className={`text-center mt-8 sm:mt-12 px-4 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+          style={{ transitionDelay: "1000ms" }}
+        >
           <p className="text-gold-200 text-base sm:text-lg hover:text-gold-100 transition-colors duration-300">
-            More exciting events coming soon! Follow us on social media for updates.
+            More exciting events coming soon! Follow us on social media for
+            updates.
           </p>
         </div>
       </div>
