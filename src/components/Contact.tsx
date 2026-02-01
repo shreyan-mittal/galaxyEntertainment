@@ -82,7 +82,7 @@ function Contact() {
       setSubmitStatus("success");
       setFormData({ name: "", email: "", phone: "", message: "" });
 
-      setTimeout(() => setSubmitStatus("idle"), 5000);
+      setTimeout(() => setSubmitStatus("idle"), 7000);
     } catch (err) {
       setSubmitStatus("error");
       setErrorMessage("Network error. Please try again.");
@@ -217,13 +217,96 @@ function Contact() {
               </div>
 
               {submitStatus === "success" ? (
-                <div className="text-center py-6">
-                  <h4 className="text-xl font-bold text-green-600 mb-2">
-                    Message Sent Successfully!
-                  </h4>
-                  <p className="text-gray-600">
-                    Thank you for reaching out. We'll get back to you soon!
-                  </p>
+                <div className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-2xl p-8 sm:p-12 overflow-hidden animate-fadeIn">
+                  {/* Animated background glow */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 via-emerald-400/10 to-teal-400/10 animate-pulse"></div>
+
+                  {/* Confetti effect */}
+                  {[...Array(25)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full animate-confetti"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        backgroundColor: [
+                          "#10b981",
+                          "#fbbf24",
+                          "#f59e0b",
+                          "#ec4899",
+                          "#8b5cf6",
+                        ][Math.floor(Math.random() * 5)],
+                        animationDelay: `${Math.random() * 0.5}s`,
+                        animationDuration: `${2 + Math.random() * 2}s`,
+                      }}
+                    />
+                  ))}
+
+                  {/* Sparkles in corners */}
+                  <Sparkles className="absolute top-4 left-4 w-6 h-6 text-emerald-500 animate-pulse" />
+                  <Sparkles
+                    className="absolute top-4 right-4 w-6 h-6 text-green-500 animate-pulse"
+                    style={{ animationDelay: "0.3s" }}
+                  />
+                  <Sparkles
+                    className="absolute bottom-4 left-4 w-6 h-6 text-amber-500 animate-bounce"
+                    style={{ animationDelay: "0.2s" }}
+                  />
+                  <Sparkles
+                    className="absolute bottom-4 right-4 w-6 h-6 text-pink-500 animate-bounce"
+                    style={{ animationDelay: "0.5s" }}
+                  />
+
+                  {/* Content */}
+                  <div className="relative z-10 text-center space-y-6">
+                    {/* Success Icon with rings */}
+                    <div className="flex justify-center">
+                      <div className="relative">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-2xl animate-scaleIn">
+                          <svg
+                            className="w-12 h-12 sm:w-14 sm:h-14 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={3}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </div>
+                        {/* Pulsing rings */}
+                        <div className="absolute inset-0 rounded-full border-4 border-green-400 animate-ping opacity-75"></div>
+                        <div
+                          className="absolute inset-0 rounded-full border-4 border-emerald-400 animate-ping opacity-50"
+                          style={{ animationDelay: "0.3s" }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    {/* Success Text */}
+                    <div className="animate-slideUp" style={{ animationDelay: "0.2s" }}>
+                      <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 relative inline-block">
+                        <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                          Message Sent Successfully!
+                        </span>
+                        {/* Subtle glow */}
+                        <span className="absolute inset-0 blur-sm bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 opacity-20"></span>
+                      </h3>
+                    </div>
+
+                    {/* Message */}
+                    <div className="animate-slideUp" style={{ animationDelay: "0.3s" }}>
+                      <p className="text-gray-700 text-base sm:text-lg leading-relaxed max-w-md mx-auto">
+                        🎉 Thank you for reaching out!
+                        <br />
+                        <span className="font-semibold text-emerald-700">
+                          We'll get back to you soon!
+                        </span>
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">

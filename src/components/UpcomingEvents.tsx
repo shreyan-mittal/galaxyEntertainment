@@ -195,8 +195,12 @@ function UpcomingEvents() {
 
               {/* body */}
               <div className="p-4 sm:p-6 md:p-8 flex flex-col flex-grow">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-navy-900 mb-4 sm:mb-6 group-hover:text-gold-600 transition-colors">
-                  {event.title}
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-navy-900 mb-4 sm:mb-6 group-hover:text-gold-600 transition-colors relative">
+                  <span className="relative z-10 bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 bg-clip-text text-transparent group-hover:from-gold-600 group-hover:via-amber-600 group-hover:to-gold-600 transition-all duration-300">
+                    {event.title}
+                  </span>
+                  {/* Subtle glow on hover */}
+                  <span className="absolute inset-0 blur-sm bg-gradient-to-r from-gold-500 via-amber-500 to-gold-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
                 </h3>
 
                 <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
@@ -215,7 +219,7 @@ function UpcomingEvents() {
                 </div>
 
                 {event.id === 1 ? (
-                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base mb-3">
+                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base mb-4">
                     {event.description}
                   </p>
                 ) : (
@@ -227,7 +231,7 @@ function UpcomingEvents() {
                 {/* ACTION AREA */}
                 <div className="mt-auto">
                   {event.id === 1 ? (
-                    /* ✅ FIXED: full-width Book Now button */
+                    /* ✅ FIXED: full-width Book Now button - moved up with mb-4 removed from description */
                     <a
                       href="https://premier.ticketek.com.au/shows/Show.aspx?sh=JAVEDALI26&eg=PROM&ep=PRESALE"
                       target="_blank"
@@ -241,52 +245,68 @@ function UpcomingEvents() {
                   ) : (
                     /* EVENT 2 */
                     <div className="space-y-4">
-                      <div className="text-center text-base sm:text-lg md:text-xl font-semibold text-navy-900 tracking-wide">
-                        Australia–New Zealand Tour
+                      {/* ✨ GLOWING Australia-New Zealand Tour text */}
+                      <div className="text-center relative">
+                        <div className="text-base sm:text-lg md:text-xl font-bold text-navy-900 tracking-wide relative inline-block">
+                          <span className="relative z-10 bg-gradient-to-r from-amber-600 via-gold-500 to-amber-600 bg-clip-text text-transparent">
+                            Australia–New Zealand Tour
+                          </span>
+                          {/* Subtle glow effect */}
+                          <span className="absolute inset-0 blur-sm bg-gradient-to-r from-amber-400 via-gold-400 to-amber-400 opacity-20"></span>
+                        </div>
                       </div>
 
-                      {/* ✅ FIXED: aligned city layout using flex-wrap */}
-                      <div className="flex flex-wrap justify-center gap-2">
-                        {geetaTourCities.map((city) => (
+                      {/* ✨ ENHANCED: More attractive city boxes with gradient, glow, and hover effects */}
+                      <div className="flex flex-wrap justify-center gap-2.5">
+                        {geetaTourCities.map((city, idx) => (
                           <div
                             key={city}
                             className="
+                              relative group/city
                               h-12 sm:h-14
                               w-[120px] sm:w-[135px] md:w-[140px]
-                              rounded-lg border border-amber-300/60
-                              bg-gradient-to-r from-orange-100 to-amber-100
-                              text-navy-900 shadow-sm
+                              rounded-lg
+                              bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100
+                              border-2 border-gold-400/40
+                              shadow-md hover:shadow-xl
                               flex items-center justify-center text-center
-                              px-2 font-semibold text-xs sm:text-sm
-                              select-none
+                              px-2 font-bold text-xs sm:text-sm
+                              text-navy-900
+                              transition-all duration-300
+                              hover:scale-105 hover:border-gold-500/70
+                              hover:-translate-y-1
+                              overflow-hidden
                             "
+                            style={{
+                              animationDelay: `${idx * 50}ms`,
+                            }}
                           >
-                            {city}
+                            {/* Shimmer effect on hover */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold-300/30 to-transparent translate-x-[-100%] group-hover/city:translate-x-[100%] transition-transform duration-700"></div>
+                            
+                            {/* Subtle glow */}
+                            <div className="absolute inset-0 bg-gold-400/0 group-hover/city:bg-gold-400/10 rounded-lg transition-all duration-300"></div>
+                            
+                            {/* City name */}
+                            <span className="relative z-10 drop-shadow-sm">{city}</span>
+                            
+                            {/* Corner sparkle */}
+                            <Sparkles className="absolute top-1 right-1 w-3 h-3 text-gold-500 opacity-0 group-hover/city:opacity-100 transition-opacity duration-300" />
                           </div>
                         ))}
                       </div>
 
-                      {/* <div className="bg-orange-50 border border-amber-300/40 rounded-lg p-3 sm:p-4"> */}
-                        {/* <p className="text-navy-900 text-xs sm:text-sm leading-relaxed">
-                          Tickets are{" "}
-                          <span className="font-semibold">
-                            to be announced soon
-                          </span>
-                          . Please register for updates.
-                        </p> */}
-
-                        <button
-                          type="button"
-                          onClick={scrollToForm}
-                          className="mt-3 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-600 hover:to-amber-600 text-white font-semibold py-3 sm:py-3.5 rounded-lg transition-all duration-500 shadow-md hover:shadow-2xl hover:shadow-gold-500/60 text-sm sm:text-base relative overflow-hidden group/btn"
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></div>
-                          <span className="relative z-10">
-                            Register Your Interest
-                          </span>
-                          <ChevronDown className="w-5 h-5 relative z-10" />
-                        </button>
-                      {/* </div> */}
+                      <button
+                        type="button"
+                        onClick={scrollToForm}
+                        className="mt-3 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-gold-500 to-amber-500 hover:from-gold-600 hover:to-amber-600 text-white font-semibold py-3 sm:py-3.5 rounded-lg transition-all duration-500 shadow-md hover:shadow-2xl hover:shadow-gold-500/60 text-sm sm:text-base relative overflow-hidden group/btn"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000"></div>
+                        <span className="relative z-10">
+                          Register Your Interest
+                        </span>
+                        <ChevronDown className="w-5 h-5 relative z-10" />
+                      </button>
                     </div>
                   )}
                 </div>
