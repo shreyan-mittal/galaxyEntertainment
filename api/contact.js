@@ -1,60 +1,64 @@
-import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
+import { Resend } from "resend";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST")
+  // Only allow POST
+  if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
+  }
 
   try {
-    const { name, email, phone, message } = req.body ?? {};
+    const { full_name, work_email, company, need, message } = req.body ?? {};
 
-    if (!name || !email || !message) {
+    // Basic validation
+    if (!full_name || !work_email || !message) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
+    // Supabase (server-side only)
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    // Save to Supabase
     const { error: dbError } = await supabase
       .from("contact_submissions")
-      .insert([{ name, email, phone: phone ?? "", message }]);
+      .insert([
+        {
+          full_name,
+          work_email,
+          company: company ?? "",
+          need: need ?? "",
+          message,
+        },
+      ]);
 
     if (dbError) {
       return res.status(500).json({ error: dbError.message });
     }
 
-    const emails = (process.env.NOTIFY_TO_EMAIL || "")
-      .split(",")
-      .map((e) => e.trim())
-      .filter(Boolean);
+    // Optional email notify via Resend
+    const resendKey = process.env.RESEND_API_KEY;
+    const notifyTo = process.env.NOTIFY_TO_EMAIL;
 
-    if (emails.length === 0) {
-      return res.status(500).json({ error: "NOTIFY_TO_EMAIL is missing" });
-    }
+    if (resendKey && notifyTo) {
+      const resend = new Resend(resendKey);
 
-    const toEmail = emails[0];        // visible recipient
-    const bccEmails = emails.slice(1); // hidden recipients
-
-    // Send email
-    await resend.emails.send({
-      from: `Galaxy Entertainment <${process.env.NOTIFY_FROM_EMAIL}>`,
-      to: toEmail,
-      ...(bccEmails.length > 0 ? { bcc: bccEmails } : {}),
-      subject: `New enquiry from ${name}`,
-      text: `Name: ${name}
-Email: ${email}
-Phone: ${phone ?? ""}
+      await resend.emails.send({
+        from: process.env.FROM_EMAIL || "Website <no-reply@yourdomain.com>",
+        to: notifyTo.split(",").map((s) => s.trim()),
+        subject: `New enquiry: ${need || "General"}`,
+        text: `Name: ${full_name}
+Email: ${work_email}
+Company: ${company || "-"}
+Need: ${need || "-"}
 Message:
 ${message}`,
-    });
+      });
+    }
 
     return res.status(200).json({ ok: true });
   } catch (err) {
-    return res.status(500).json({ error: err?.message ?? "Unknown error" });
+    return res.status(500).json({ error: err?.message || "Server error" });
   }
 }

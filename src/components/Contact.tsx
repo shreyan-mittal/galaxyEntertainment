@@ -183,7 +183,7 @@ setTimeout(() => setSubmitStatus('idle'), 5000);
                       </a>
                     </div>
 
-                    <div className="bg-gradient-to-r from-gray-50 to-transparent p-3 rounded-lg border-l-4 border-gold-500">
+                    {/* <div className="bg-gradient-to-r from-gray-50 to-transparent p-3 rounded-lg border-l-4 border-gold-500">
                       <p className="text-gray-500 text-xs sm:text-sm font-semibold mb-1">Hitesh Modi</p>
                       <a
                         href="tel:+61410738938"
@@ -191,7 +191,7 @@ setTimeout(() => setSubmitStatus('idle'), 5000);
                       >
                         +61 410 738 938
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
