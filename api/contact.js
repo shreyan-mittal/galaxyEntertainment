@@ -2,63 +2,69 @@ import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 
 export default async function handler(req, res) {
-  // Only allow POST
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  // 🔎 HARD ENV CHECK (no VITE_ here)
+  const required = [
+    "SUPABASE_URL",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "RESEND_API_KEY",
+    "NOTIFY_TO_EMAIL",
+    "NOTIFY_FROM_EMAIL",
+  ];
+
+  const missing = required.filter((k) => !process.env[k]);
+
+  if (missing.length > 0) {
+    console.error("ENV CHECK FAILED", Object.fromEntries(
+      required.map(k => [k, Boolean(process.env[k])])
+    ));
+
+    return res.status(500).json({
+      error: "Server misconfigured: missing environment variables",
+      missing,
+    });
+  }
+
+  const { name, email, phone, message } = req.body || {};
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
   try {
-    const { full_name, work_email, company, need, message } = req.body ?? {};
-
-    // Basic validation
-    if (!full_name || !work_email || !message) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    // Supabase (server-side only)
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    // Save to Supabase
     const { error: dbError } = await supabase
       .from("contact_submissions")
-      .insert([
-        {
-          full_name,
-          work_email,
-          company: company ?? "",
-          need: need ?? "",
-          message,
-        },
-      ]);
+      .insert([{ name, email, phone: phone || "", message }]);
 
-    if (dbError) {
-      return res.status(500).json({ error: dbError.message });
-    }
+    if (dbError) throw dbError;
 
-    // Optional email notify via Resend
-    const resendKey = process.env.RESEND_API_KEY;
-    const notifyTo = process.env.NOTIFY_TO_EMAIL;
+    // Email
+    await resend.emails.send({
+      from: process.env.NOTIFY_FROM_EMAIL,
+      to: process.env.NOTIFY_TO_EMAIL.split(","),
+      subject: "New Contact Form Submission",
+      html: `
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || "-"}</p>
+        <p><strong>Message:</strong><br/>${message}</p>
+      `,
+    });
 
-    if (resendKey && notifyTo) {
-      const resend = new Resend(resendKey);
-
-      await resend.emails.send({
-        from: process.env.FROM_EMAIL || "Website <no-reply@yourdomain.com>",
-        to: notifyTo.split(",").map((s) => s.trim()),
-        subject: `New enquiry: ${need || "General"}`,
-        text: `Name: ${full_name}
-Email: ${work_email}
-Company: ${company || "-"}
-Need: ${need || "-"}
-Message:
-${message}`,
-      });
-    }
-
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ success: true });
   } catch (err) {
-    return res.status(500).json({ error: err?.message || "Server error" });
+    console.error("CONTACT API ERROR", err);
+    return res.status(500).json({ error: "Internal server error" });
   }
 }
