@@ -1333,3 +1333,7 @@
   animation: slideUp 0.5s ease-out forwards;
   opacity: 0;
 }
+
+select option {
+  font-size: 0.875rem; /* 14px */
+}

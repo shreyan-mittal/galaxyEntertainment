@@ -1,5 +1,5 @@
 import { Mail, Phone, MapPin, Sparkles, Send } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Contact() {
   const [isVisible, setIsVisible] = useState(false);
@@ -9,6 +9,8 @@ function Contact() {
     name: "",
     email: "",
     phone: "",
+    event: "",
+    city: "",
     message: "",
   });
 
@@ -18,6 +20,30 @@ function Contact() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // ✅ Shared field styles (same UI, consistent text color, prevents overflow)
+  const fieldClassBase =
+    "w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl " +
+    "focus:border-gold-500 focus:outline-none transition-all duration-300 " +
+    "bg-white placeholder-gray-400 " +
+    "overflow-hidden whitespace-nowrap truncate";
+
+  const inputClass = `${fieldClassBase} text-gray-800`;
+
+  // For selects: keep placeholder grey until selected + keep text from overflowing
+  const selectClass = (hasValue: boolean) =>
+  "w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl " +
+  "focus:border-gold-500 focus:outline-none transition-all duration-300 " +
+  "bg-white " +
+  "text-sm sm:text-base " + // 👈 SMALLER TEXT (KEY FIX)
+  (hasValue ? "text-gray-800" : "text-gray-400");
+
+
+  // Textarea should wrap, not truncate
+  const textareaClass =
+    "w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl " +
+    "focus:border-gold-500 focus:outline-none transition-all duration-300 " +
+    "bg-white text-gray-800 placeholder-gray-400 resize-none mb-4";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -52,10 +78,18 @@ function Contact() {
       name: formData.name.trim(),
       email: formData.email.trim(),
       phone: formData.phone.trim(),
+      event: formData.event.trim(),
+      city: formData.city.trim(),
       message: formData.message.trim(),
     };
 
-    if (!payload.name || !payload.email || !payload.message) {
+    if (
+      !payload.name ||
+      !payload.email ||
+      !payload.event ||
+      !payload.city ||
+      !payload.message
+    ) {
       setSubmitStatus("error");
       setErrorMessage("Missing required fields");
       setIsSubmitting(false);
@@ -80,10 +114,17 @@ function Contact() {
       }
 
       setSubmitStatus("success");
-      setFormData({ name: "", email: "", phone: "", message: "" });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        event: "",
+        city: "",
+        message: "",
+      });
 
       setTimeout(() => setSubmitStatus("idle"), 7000);
-    } catch (err) {
+    } catch {
       setSubmitStatus("error");
       setErrorMessage("Network error. Please try again.");
     } finally {
@@ -97,7 +138,7 @@ function Contact() {
       id="contact"
       className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-white via-gray-50 to-white relative overflow-hidden scroll-mt-20"
     >
-     
+      {/* Background blobs */}
       <div className="absolute inset-0 opacity-5">
         <div
           className="absolute top-0 left-1/4 w-96 h-96 bg-gold-500 rounded-full blur-3xl animate-pulse"
@@ -119,6 +160,7 @@ function Contact() {
         />
       </div>
 
+      {/* Sparkles */}
       <div className="absolute inset-0 opacity-10 pointer-events-none">
         {[...Array(6)].map((_, i) => (
           <Sparkles
@@ -153,6 +195,7 @@ function Contact() {
         </div>
 
         <div className="max-w-4xl mx-auto">
+          {/* Contact cards */}
           <div className="flex flex-col gap-4 mb-10">
             <div className="group flex items-start gap-4 p-5 sm:p-6 bg-white border-2 border-gray-100 rounded-2xl hover:border-gold-500 hover:shadow-2xl transition-all duration-500 relative overflow-hidden">
               <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-gold-500 to-yellow-600 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
@@ -203,6 +246,7 @@ function Contact() {
             </div>
           </div>
 
+          {/* Form */}
           <div id="message-form" className="scroll-mt-24">
             <div className="bg-gradient-to-br from-navy-50 via-white to-gold-50 border-2 border-gray-100 rounded-3xl p-6 sm:p-8 md:p-10">
               <div className="text-center mb-6 sm:mb-8">
@@ -218,10 +262,8 @@ function Contact() {
 
               {submitStatus === "success" ? (
                 <div className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 rounded-2xl p-8 sm:p-12 overflow-hidden animate-fadeIn">
-                  {/* Animated background glow */}
                   <div className="absolute inset-0 bg-gradient-to-r from-green-400/10 via-emerald-400/10 to-teal-400/10 animate-pulse"></div>
 
-                  {/* Confetti effect */}
                   {[...Array(25)].map((_, i) => (
                     <div
                       key={i}
@@ -241,7 +283,6 @@ function Contact() {
                     />
                   ))}
 
-                  {/* Sparkles in corners */}
                   <Sparkles className="absolute top-4 left-4 w-6 h-6 text-emerald-500 animate-pulse" />
                   <Sparkles
                     className="absolute top-4 right-4 w-6 h-6 text-green-500 animate-pulse"
@@ -256,9 +297,7 @@ function Contact() {
                     style={{ animationDelay: "0.5s" }}
                   />
 
-                  {/* Content */}
                   <div className="relative z-10 text-center space-y-6">
-                    {/* Success Icon with rings */}
                     <div className="flex justify-center">
                       <div className="relative">
                         <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-2xl animate-scaleIn">
@@ -276,7 +315,6 @@ function Contact() {
                             />
                           </svg>
                         </div>
-                        {/* Pulsing rings */}
                         <div className="absolute inset-0 rounded-full border-4 border-green-400 animate-ping opacity-75"></div>
                         <div
                           className="absolute inset-0 rounded-full border-4 border-emerald-400 animate-ping opacity-50"
@@ -285,19 +323,22 @@ function Contact() {
                       </div>
                     </div>
 
-                    {/* Success Text */}
-                    <div className="animate-slideUp" style={{ animationDelay: "0.2s" }}>
+                    <div
+                      className="animate-slideUp"
+                      style={{ animationDelay: "0.2s" }}
+                    >
                       <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 relative inline-block">
                         <span className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent">
                           Message Sent Successfully!
                         </span>
-                        {/* Subtle glow */}
                         <span className="absolute inset-0 blur-sm bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 opacity-20"></span>
                       </h3>
                     </div>
 
-                    {/* Message */}
-                    <div className="animate-slideUp" style={{ animationDelay: "0.3s" }}>
+                    <div
+                      className="animate-slideUp"
+                      style={{ animationDelay: "0.3s" }}
+                    >
                       <p className="text-gray-700 text-base sm:text-lg leading-relaxed max-w-md mx-auto">
                         🎉 Thank you for reaching out!
                         <br />
@@ -320,7 +361,7 @@ function Contact() {
                       }
                       required
                       disabled={isSubmitting}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl focus:border-gold-500 focus:outline-none transition-all duration-300 bg-white text-gray-800 placeholder-gray-400"
+                      className={inputClass}
                     />
 
                     <input
@@ -332,7 +373,7 @@ function Contact() {
                       }
                       required
                       disabled={isSubmitting}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl focus:border-gold-500 focus:outline-none transition-all duration-300 bg-white text-gray-800 placeholder-gray-400"
+                      className={inputClass}
                     />
 
                     <input
@@ -343,8 +384,51 @@ function Contact() {
                         setFormData((p) => ({ ...p, phone: e.target.value }))
                       }
                       disabled={isSubmitting}
-                      className="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl focus:border-gold-500 focus:outline-none transition-all duration-300 bg-white text-gray-800 placeholder-gray-400"
+                      className={inputClass}
                     />
+                  </div>
+
+                  {/* New fields (fixed: same font color + no overflow) */}
+                  <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                    <select
+                      value={formData.event}
+                      onChange={(e) =>
+                        setFormData((p) => ({ ...p, event: e.target.value }))
+                      }
+                      required
+                      disabled={isSubmitting}
+                      className={selectClass(!!formData.event)}
+                    >
+                      <option value="" disabled>
+                        Select Event *
+                      </option>
+                      <option value="Javed Ali Concert">Javed Ali Concert</option>
+                      <option value="Geeta Rabari Garba">
+                        Geeta Rabari Garba
+                      </option>
+                      <option value="General Inquiry">General Inquiry</option>
+                    </select>
+
+                    <select
+                      value={formData.city}
+                      onChange={(e) =>
+                        setFormData((p) => ({ ...p, city: e.target.value }))
+                      }
+                      required
+                      disabled={isSubmitting}
+                      className={selectClass(!!formData.city)}
+                    >
+                      <option value="" disabled>
+                        Which city are you inquiring for? *
+                      </option>
+                      <option value="Perth">Perth</option>
+                      <option value="Melbourne">Melbourne</option>
+                      <option value="Sydney">Sydney</option>
+                      <option value="Christchurch">Christchurch</option>
+                      <option value="Adelaide">Adelaide</option>
+                      <option value="Brisbane">Brisbane</option>
+                      <option value="Auckland">Auckland</option>
+                    </select>
                   </div>
 
                   <textarea
@@ -356,7 +440,7 @@ function Contact() {
                     rows={5}
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 sm:px-5 py-3 sm:py-4 border-2 border-gray-200 rounded-xl focus:border-gold-500 focus:outline-none transition-all duration-300 bg-white text-gray-800 placeholder-gray-400 resize-none mb-4"
+                    className={textareaClass}
                   />
 
                   {submitStatus === "error" && (
