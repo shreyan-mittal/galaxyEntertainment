@@ -422,12 +422,12 @@ function Contact() {
                         Which city are you inquiring for? *
                       </option>
                       <option value="Perth">Perth</option>
-                      <option value="Melbourne">Melbourne</option>
                       <option value="Sydney">Sydney</option>
-                      <option value="Christchurch">Christchurch</option>
-                      <option value="Adelaide">Adelaide</option>
+                      <option value="Melbourne">Melbourne</option>
                       <option value="Brisbane">Brisbane</option>
+                      <option value="Adelaide">Adelaide</option>
                       <option value="Auckland">Auckland</option>
+                      <option value="Christchurch">Christchurch</option>
                     </select>
                   </div>
 
